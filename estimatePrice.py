@@ -6,7 +6,7 @@ import sys
 
 def open_file():
 	try:
-		with open('predictions.csv', mode='r') as file:
+		with open('model.csv', mode='r') as file:
 			csv_reader = csv.reader(file)
 			theta0, theta1 = next(csv_reader)
 	except FileNotFoundError:
@@ -20,22 +20,29 @@ def open_file():
 		theta0, theta1 = 0.0, 0.0
 	return float(theta0), float(theta1)
 
-def estimatePrice(milage, theta0, theta1):
-	return theta0 + (theta1 * milage)
+def estimatePrice(mileage, theta0, theta1):
+	return theta0 + (theta1 * mileage)
 
 def main():
 	theta0, theta1 = open_file()
 	while True:
 		try:
-			milage = float(input("Please enter the milage: "))
+			mileage = float(input("Please enter the mileage: "))
 		except EOFError:
 			print("BYE")
 			return
 		except:
-			print("Invalid Milage")
+			print("Invalid mileage")
+			continue
+		if mileage < 0:
+			print("The mileage must be a positive number.")
 			continue
 		break
-	print (estimatePrice(milage, theta0, theta1))
+	price = estimatePrice(mileage, theta0, theta1)
+	if price < 0:
+		price = 0
+		print("The line is in the negative side")
+	print (price)
 
 if __name__ == "__main__":
 	main()
